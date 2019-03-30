@@ -17,8 +17,11 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+if not os.getenv("DATABASE_URL"):
+    raise RuntimeError("DATABASE_URL is not set")
+
 # Set up database
-engine = create_engine("postgres://zzhtcfcgaobuze:038dd636f425caec2d358481d1b5031360dacc04f8849b11ec4b7e19d9ba1b35@ec2-79-125-117-53.eu-west-1.compute.amazonaws.com:5432/dc5t085gj2vk3")
+engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 
